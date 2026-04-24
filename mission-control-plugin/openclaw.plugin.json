@@ -1,0 +1,43 @@
+{
+  "id": "mission-control",
+  "name": "Mission Control",
+  "description": "Multi-agent management dashboard — manage employees, email campaigns, and monitor your OpenClaw fleet from one place",
+  "version": "1.0.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "dashboardUrl": {
+        "type": "string",
+        "description": "URL of the Mission Control Next.js dashboard",
+        "default": "http://localhost:3000"
+      },
+      "defaultFromEmail": {
+        "type": "string",
+        "description": "Default sender email for campaigns"
+      }
+    }
+  },
+  "contracts": {
+    "tools": [
+      "mission_control_status",
+      "mission_control_campaign_send",
+      "mission_control_employee_list"
+    ]
+  },
+  "uiHints": {
+    "dashboardUrl": {
+      "label": "Dashboard URL",
+      "placeholder": "http://localhost:3000",
+      "help": "URL where your Mission Control Next.js app is running"
+    },
+    "defaultFromEmail": {
+      "label": "Default sender email",
+      "placeholder": "outreach@company.com",
+      "sensitive": false
+    }
+  },
+  "activation": {
+    "onCapabilities": ["tool"]
+  }
+}

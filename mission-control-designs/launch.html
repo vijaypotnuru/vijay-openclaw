@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mission Control - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#3b494b",
+                    "on-background": "#e2e2e5",
+                    "surface-container-high": "#282a2c",
+                    "on-primary": "#00363a",
+                    "primary-fixed-dim": "#00dbe9",
+                    "inverse-surface": "#e2e2e5",
+                    "inverse-primary": "#006970",
+                    "on-error": "#690005",
+                    "surface-dim": "#121416",
+                    "surface-container-lowest": "#0c0e10",
+                    "inverse-on-surface": "#2f3033",
+                    "background": "#121416",
+                    "on-tertiary-container": "#c00119",
+                    "surface": "#121416",
+                    "surface-bright": "#38393c",
+                    "secondary-fixed": "#ffdea8",
+                    "on-tertiary-fixed-variant": "#930010",
+                    "surface-variant": "#333537",
+                    "tertiary-fixed": "#ffdad6",
+                    "on-primary-fixed": "#002022",
+                    "on-tertiary-fixed": "#410003",
+                    "on-tertiary": "#680008",
+                    "outline": "#849495",
+                    "surface-container-highest": "#333537",
+                    "error": "#ffb4ab",
+                    "secondary-container": "#feb700",
+                    "surface-container": "#1e2022",
+                    "primary": "#dbfcff",
+                    "error-container": "#93000a",
+                    "primary-container": "#00f0ff",
+                    "secondary-fixed-dim": "#ffba20",
+                    "tertiary": "#fff3f2",
+                    "surface-container-low": "#1a1c1e",
+                    "secondary": "#ffdb9d",
+                    "on-surface-variant": "#b9cacb",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#5e4200",
+                    "on-secondary": "#412d00",
+                    "on-surface": "#e2e2e5",
+                    "tertiary-fixed-dim": "#ffb3ad",
+                    "primary-fixed": "#7df4ff",
+                    "on-primary-container": "#006970",
+                    "on-secondary-fixed": "#271900",
+                    "on-secondary-container": "#6b4b00",
+                    "tertiary-container": "#ffcec9",
+                    "surface-tint": "#00dbe9",
+                    "on-primary-fixed-variant": "#004f54"
+            },
+            "fontFamily": {
+                    "body-md": ["Space Grotesk"],
+                    "mono-data-md": ["monospace"],
+                    "headline-lg": ["Space Grotesk"],
+                    "mono-data-lg": ["monospace"],
+                    "headline-xl": ["Space Grotesk"],
+                    "label-caps": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "mono-data-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0px", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "mono-data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0px", "fontWeight": "500"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #00f0ff; border-radius: 0; }
+        .glitch-hover:hover {
+            text-shadow: 2px 0 #ff003c, -2px 0 #00f0ff;
+        }
+        .scanline {
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0, 240, 255, 0.05) 50%, rgba(0,0,0,0) 100%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            position: absolute;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-background font-body-md overflow-hidden">
+<!-- NAVIGATION SHELL: SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r border-outline-variant bg-zinc-950 flex flex-col z-[60]">
+<div class="p-6 border-b border-outline-variant">
+<h1 class="text-2xl font-black text-primary-container italic tracking-tighter">OPENCLAW</h1>
+<p class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-primary-container/60">MISSION_CONTROL_v1.0</p>
+</div>
+<nav class="flex-grow py-4">
+<!-- Active: OVERVIEW -->
+<a class="flex items-center gap-3 px-6 py-4 text-primary-container bg-primary-container/5 border-r-2 border-primary-container shadow-[inset_0_0_8px_rgba(0,240,255,0.2)]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">OVERVIEW</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-zinc-500 hover:text-primary-container hover:bg-zinc-900/50 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">SYSTEM STATUS</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-zinc-500 hover:text-primary-container hover:bg-zinc-900/50 transition-colors" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps text-label-caps">API LOGS</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-zinc-500 hover:text-primary-container hover:bg-zinc-900/50 transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps">RESOURCES</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-zinc-500 hover:text-primary-container hover:bg-zinc-900/50 transition-colors" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-caps text-label-caps">SECURITY</span>
+</a>
+</nav>
+<div class="p-6 flex items-center gap-3 border-t border-outline-variant">
+<img alt="Operator" class="w-10 h-10 rounded border border-primary-container" data-alt="Digital portrait of a cybernetic human operator with glowing interface elements and dark techwear clothing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF6ECQ8k7Oig0P6JTIqLRJyWz8XyUefXNCIY4ld2-Q6rZy055uT0040nsoo8vemKJjdSMAy4bXaASa-HZsPF4IIl3jV_rdotZ1EaK_Y2YuTzcLXzOEmpUtoYDCkly9rVeAnX9ttX1eKo2Vp8VWBUarW4DbjAGWIlvpEJP7WjBnldbpmch78uT-1_G3si-Vb7QnflhMmEC2vcyrUtC2VbqyJBVBu1B81vSNwaOaOJHLNSaK0FKEXe3L3oDuULQpYCbcPULfXR2YXG2q"/>
+<div>
+<p class="text-xs font-bold text-on-surface">OP_CLAW_01</p>
+<p class="text-[10px] text-primary-container/60 font-mono">RANK: ADM_LEVEL_5</p>
+</div>
+</div>
+</aside>
+<!-- NAVIGATION SHELL: TopNavBar -->
+<header class="fixed top-0 left-64 right-0 h-14 border-b border-outline-variant bg-zinc-950/80 backdrop-blur-md z-50 flex items-center justify-between px-6">
+<div class="flex items-center">
+<span class="font-bold text-primary-container border-r border-outline-variant pr-4 mr-4 font-mono-data-md">CORE_SYSTEM_HEALTH</span>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container rounded-sm shadow-[0_0_8px_#00f0ff]"></span>
+<span class="text-[10px] font-mono-data-md text-primary-container">LATENCY: 12ms</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container rounded-sm shadow-[0_0_8px_#00f0ff]"></span>
+<span class="text-[10px] font-mono-data-md text-primary-container">UPTIME: 99.98%</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-2 text-zinc-500 text-sm">search</span>
+<input class="bg-zinc-900/50 border-b-2 border-outline-variant text-xs font-mono py-1 pl-8 pr-4 focus:border-primary-container outline-none w-48 text-primary-container" placeholder="EXECUTE_QUERY..." type="text"/>
+</div>
+<div class="flex gap-4 text-zinc-400">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-container">notifications_active</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-container">settings_input_component</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-container">account_circle</span>
+</div>
+<button class="px-3 py-1 border border-primary-container text-[10px] font-bold text-primary-container hover:bg-primary-container hover:text-zinc-950 transition-all cursor-crosshair">SYS_STABLE</button>
+</div>
+</header>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-64 mt-14 h-[calc(100vh-3.5rem)] p-6 overflow-y-auto relative bg-[#0A0C0E]">
+<div class="scanline"></div>
+<div class="grid grid-cols-12 gap-4 h-full relative z-20">
+<!-- 1. System Health -->
+<section class="col-span-12 md:col-span-8 bg-[#14171A] border border-outline-variant flex flex-col">
+<div class="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary-container"></span>
+<h2 class="font-label-caps text-label-caps text-on-surface">SYSTEM_HEALTH_STREAM</h2>
+</div>
+<div class="flex gap-1">
+<span class="w-2 h-2 bg-primary-container"></span>
+<span class="w-2 h-2 bg-primary-container/40"></span>
+<span class="w-2 h-2 bg-primary-container/20"></span>
+</div>
+</div>
+<div class="p-6 grid grid-cols-3 gap-6">
+<div class="col-span-1 flex flex-col justify-center">
+<span class="text-[10px] font-mono-data-md text-zinc-500 mb-1">TOTAL_UPTIME</span>
+<div class="text-6xl font-black text-primary-container leading-none">99.98<span class="text-xl">%</span></div>
+<div class="mt-4 flex gap-1 h-2">
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container"></div>
+<div class="w-1/12 bg-primary-container/20"></div>
+<div class="w-1/12 bg-primary-container/20"></div>
+</div>
+</div>
+<div class="col-span-2 relative h-48 border border-outline-variant bg-zinc-950/50 p-2 overflow-hidden">
+<div class="absolute inset-0 flex items-end justify-between px-2 pb-2 gap-1">
+<!-- Simulated Graph Bars -->
+<div class="w-full bg-primary-container/40" style="height: 40%"></div>
+<div class="w-full bg-primary-container/60" style="height: 55%"></div>
+<div class="w-full bg-primary-container/50" style="height: 45%"></div>
+<div class="w-full bg-primary-container/70" style="height: 60%"></div>
+<div class="w-full bg-primary-container/80" style="height: 85%"></div>
+<div class="w-full bg-primary-container/60" style="height: 50%"></div>
+<div class="w-full bg-primary-container/40" style="height: 30%"></div>
+<div class="w-full bg-primary-container/90" style="height: 95%"></div>
+<div class="w-full bg-primary-container/50" style="height: 40%"></div>
+<div class="w-full bg-primary-container/70" style="height: 70%"></div>
+<div class="w-full bg-primary-container/60" style="height: 55%"></div>
+<div class="w-full bg-primary-container/40" style="height: 35%"></div>
+</div>
+<div class="absolute top-2 left-2 text-[8px] font-mono text-primary-container/60">SERVER_LOAD_TELEMETRY</div>
+</div>
+</div>
+</section>
+<!-- 5. Resource Allocation -->
+<section class="col-span-12 md:col-span-4 bg-[#14171A] border border-outline-variant flex flex-col">
+<div class="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-secondary-container"></span>
+<h2 class="font-label-caps text-label-caps text-on-surface">RESOURCE_DISTRIBUTION</h2>
+</div>
+</div>
+<div class="p-6 flex flex-col items-center justify-center flex-grow">
+<div class="relative w-40 h-40 flex items-center justify-center">
+<!-- Custom SVG Segmented Pie -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#1a1c1e" stroke-dasharray="100 100" stroke-width="3"></circle>
+<circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#00f0ff" stroke-dasharray="45 100" stroke-dashoffset="0" stroke-width="3"></circle>
+<circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#feb700" stroke-dasharray="30 100" stroke-dashoffset="-45" stroke-width="3"></circle>
+<circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#ffb4ab" stroke-dasharray="25 100" stroke-dashoffset="-75" stroke-width="3"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-xs font-mono text-zinc-500">UTIL</span>
+<span class="text-xl font-bold font-mono text-on-surface">76%</span>
+</div>
+</div>
+<div class="mt-6 w-full space-y-2">
+<div class="flex justify-between items-center text-[10px] font-mono">
+<span class="flex items-center gap-2"><span class="w-2 h-2 bg-primary-container"></span> DATA_PROCESSING</span>
+<span class="text-primary-container">45%</span>
+</div>
+<div class="flex justify-between items-center text-[10px] font-mono">
+<span class="flex items-center gap-2"><span class="w-2 h-2 bg-secondary-container"></span> CRYPTO_OPS</span>
+<span class="text-secondary-container">30%</span>
+</div>
+<div class="flex justify-between items-center text-[10px] font-mono">
+<span class="flex items-center gap-2"><span class="w-2 h-2 bg-error"></span> SYS_KERNEL</span>
+<span class="text-error">25%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Active Threads -->
+<section class="col-span-12 md:col-span-5 bg-[#14171A] border border-outline-variant flex flex-col">
+<div class="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary-container"></span>
+<h2 class="font-label-caps text-label-caps text-on-surface">THREAD_MONITOR</h2>
+</div>
+<span class="text-[10px] font-mono text-zinc-500">ACTIVE: 124</span>
+</div>
+<div class="flex-grow overflow-y-auto p-4 space-y-4">
+<!-- Thread Row -->
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-primary-container">PROC_HASH_SH256</span>
+<span class="text-zinc-500">88%</span>
+</div>
+<div class="h-1 bg-zinc-900 overflow-hidden">
+<div class="h-full bg-primary-container w-[88%] shadow-[0_0_5px_#00f0ff]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-primary-container">ENCRYPT_VOIP_04</span>
+<span class="text-zinc-500">42%</span>
+</div>
+<div class="h-1 bg-zinc-900 overflow-hidden">
+<div class="h-full bg-primary-container w-[42%] shadow-[0_0_5px_#00f0ff]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-error">KERNEL_RECOVERY</span>
+<span class="text-error">95%</span>
+</div>
+<div class="h-1 bg-zinc-900 overflow-hidden">
+<div class="h-full bg-error w-[95%] shadow-[0_0_5px_#ffb4ab]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-primary-container">SCRAPER_BOT_ALPHA</span>
+<span class="text-zinc-500">12%</span>
+</div>
+<div class="h-1 bg-zinc-900 overflow-hidden">
+<div class="h-full bg-primary-container w-[12%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-mono">
+<span class="text-secondary-container">BUFFER_FLUSH_01</span>
+<span class="text-zinc-500">65%</span>
+</div>
+<div class="h-1 bg-zinc-900 overflow-hidden">
+<div class="h-full bg-secondary-container w-[65%] shadow-[0_0_5px_#feb700]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Network Traffic (Map/Visual) -->
+<section class="col-span-12 md:col-span-7 bg-[#14171A] border border-outline-variant flex flex-col">
+<div class="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary-container">language</span>
+<h2 class="font-label-caps text-label-caps text-on-surface">GLOBAL_NODE_TOPOLOGY</h2>
+</div>
+</div>
+<div class="relative flex-grow bg-zinc-950 p-4">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#00f0ff 1px, transparent 0); background-size: 20px 20px;"></div>
+<div class="relative w-full h-full flex items-center justify-center">
+<div class="w-full h-48 bg-zinc-900/50 border border-outline-variant/30 flex items-center justify-center relative overflow-hidden">
+<!-- Simulated Map Placeholder -->
+<img class="w-full h-full object-cover opacity-50 grayscale contrast-125" data-alt="Digital stylized world map with glowing blue network connections and node data points on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDonUG2E6YZ-Hb-7JGjP5krPh_lXLOWMzXiyxqmPqnX-5xRAMtX02DN7OnSMg66f3B9u_vyOWsd0_0E7rtsJN7BfXPMG96gYeCTg5feHJonU-FFcg8buEq9FUQy4VIB2iJucQ9yMxcilfb6wPdMl0-NmI87UAVenhODEQBJMis0FsLW71A8xrtC4q8i32R6YCDwsA_3LnYqkPrDfeYyoURSwA4ccjkaf5X4peO6q45MDe-kHSGxhOQWURaKKdzg_Ah5XNe-8xbTQf6z"/>
+<div class="absolute inset-0">
+<!-- Node markers -->
+<div class="absolute top-1/4 left-1/3 w-3 h-3 bg-primary-container rounded-full animate-ping"></div>
+<div class="absolute top-1/2 left-2/3 w-2 h-2 bg-secondary-container rounded-full"></div>
+<div class="absolute top-2/3 left-1/4 w-2 h-2 bg-error rounded-full animate-pulse"></div>
+</div>
+</div>
+<div class="absolute bottom-6 right-6 flex flex-col gap-1">
+<div class="flex items-center gap-2 text-[8px] font-mono bg-zinc-950 p-1 border border-outline-variant">
+<span class="text-primary-container">EST_LAT: +0.42</span>
+</div>
+<div class="flex items-center gap-2 text-[8px] font-mono bg-zinc-950 p-1 border border-outline-variant">
+<span class="text-secondary-container">EST_LON: -1.21</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Security Feed -->
+<section class="col-span-12 bg-[#14171A] border border-outline-variant flex flex-col h-64">
+<div class="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-error">security</span>
+<h2 class="font-label-caps text-label-caps text-on-surface">LIVE_SECURITY_TELEMETRY</h2>
+</div>
+</div>
+<div class="p-4 font-mono text-[11px] overflow-y-auto bg-zinc-950 h-full scroll-smooth">
+<div class="flex gap-4 mb-2 hover:bg-zinc-900/50 p-1">
+<span class="text-zinc-500">[14:22:01]</span>
+<span class="text-primary-container">INFO</span>
+<span class="text-on-surface">Connection established from node 192.168.0.1 (VPN_TUNNEL_0)</span>
+</div>
+<div class="flex gap-4 mb-2 hover:bg-zinc-900/50 p-1">
+<span class="text-zinc-500">[14:22:15]</span>
+<span class="text-secondary-container">WARN</span>
+<span class="text-on-surface">Multiple failed login attempts detected for USER_ROOT</span>
+</div>
+<div class="flex gap-4 mb-2 hover:bg-zinc-900/50 p-1">
+<span class="text-zinc-500">[14:22:18]</span>
+<span class="text-error">ALRT</span>
+<span class="text-error">UNAUTHORIZED_ACCESS_ATTEMPT from IP: 45.12.8.221 - BLOCKING...</span>
+</div>
+<div class="flex gap-4 mb-2 hover:bg-zinc-900/50 p-1">
+<span class="text-zinc-500">[14:23:42]</span>
+<span class="text-primary-container">INFO</span>
+<span class="text-on-surface">Firewall updated to v9.42_STABLE</span>
+</div>
+<div class="flex gap-4 mb-2 hover:bg-zinc-900/50 p-1">
+<span class="text-zinc-500">[14:24:05]</span>
+<span class="text-primary-container">INFO</span>
+<span class="text-on-surface">Heartbeat pulse verified - CORE_01</span>
+</div>
+<div class="flex gap-4 mb-2 hover:bg-zinc-900/50 p-1">
+<span class="text-zinc-500">[14:24:33]</span>
+<span class="text-secondary-container">WARN</span>
+<span class="text-on-surface">Thermal threshold exceeded in Cluster_B - Fan speed increase to 100%</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Contextual FAB (Only on relevant screens) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-zinc-950 flex items-center justify-center border-4 border-zinc-950 shadow-[0_0_15px_#00f0ff] hover:scale-105 active:scale-95 transition-all z-[100]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 700">terminal</span>
+</button>
+<!-- SCANLINE DECORATION -->
+<div class="fixed inset-0 pointer-events-none z-[200] opacity-10" style="background: repeating-linear-gradient(0deg, transparent, transparent 1px, #00f0ff 2px);"></div>
+</body></html>

@@ -1,0 +1,21 @@
+{
+  "name": "@vijaypotnuru/openclaw-mission-control",
+  "version": "1.0.0",
+  "description": "Mission Control — multi-agent management, email campaigns, and employee dashboard for OpenClaw",
+  "type": "module",
+  "main": "./index.ts",
+  "openclaw": {
+    "extensions": ["./index.ts"],
+    "compat": {
+      "pluginApi": ">=2026.4.15",
+      "minGatewayVersion": "2026.4.15"
+    },
+    "build": {
+      "openclawVersion": "2026.4.15",
+      "pluginSdkVersion": "2026.4.15"
+    }
+  },
+  "keywords": ["openclaw", "mission-control", "multi-agent", "campaigns", "email-outreach"],
+  "author": "Vijay Potnuru",
+  "license": "MIT"
+}

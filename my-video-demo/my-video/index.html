@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #050510; font-family: 'Inter', sans-serif; }
+    
+    /* Deep space background */
+    .space-bg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 50% 50%, #0a0a1a 0%, #050510 100%);
+    }
+    
+    /* Nebula clouds */
+    .nebula-1 {
+      position: absolute; top: -10%; left: -10%; width: 60%; height: 60%;
+      background: radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%);
+      filter: blur(60px);
+    }
+    .nebula-2 {
+      position: absolute; bottom: -10%; right: -10%; width: 50%; height: 50%;
+      background: radial-gradient(ellipse, rgba(236,72,153,0.06) 0%, transparent 70%);
+      filter: blur(60px);
+    }
+    .nebula-3 {
+      position: absolute; top: 30%; right: 20%; width: 40%; height: 40%;
+      background: radial-gradient(ellipse, rgba(6,182,212,0.05) 0%, transparent 70%);
+      filter: blur(60px);
+    }
+    
+    /* Stars */
+    .star {
+      position: absolute; border-radius: 50%; background: rgba(255,255,255,0.8);
+    }
+    
+    /* Grid overlay */
+    .tech-grid {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: 
+        linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+    
+    /* Horizontal scanning line */
+    .scan-line {
+      position: absolute; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), rgba(236,72,153,0.3), transparent);
+      z-index: 3;
+    }
+    
+    /* === SCENE 1: The Problem === */
+    .scene-problem {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .problem-box {
+      text-align: center; max-width: 1200px;
+    }
+    .problem-q {
+      font-size: 72px; font-weight: 900; color: #fff; letter-spacing: -2px; line-height: 1.1;
+    }
+    .problem-q-accent {
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .problem-sub {
+      font-size: 22px; color: rgba(255,255,255,0.35); margin-top: 24px; font-weight: 300; letter-spacing: 1px;
+    }
+    
+    /* === SCENE 2: Chaotic channels === */
+    .scene-channels {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+    }
+    .channels-label {
+      font-size: 18px; font-weight: 300; color: rgba(255,255,255,0.3); letter-spacing: 6px; text-transform: uppercase;
+    }
+    .channels-row {
+      display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 1200px;
+    }
+    .ch-pill {
+      padding: 14px 28px; border-radius: 100px; font-size: 16px; font-weight: 600;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.6);
+    }
+    .ch-pill-highlight {
+      background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.3); color: #818cf8;
+    }
+    .channels-question {
+      font-size: 48px; font-weight: 900; color: #fff; margin-top: 20px;
+    }
+    .channels-question-accent {
+      background: linear-gradient(135deg, #ec4899, #f59e0b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    
+    /* === SCENE 3: OpenClaw Logo Reveal === */
+    .scene-logo {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .logo-lobster {
+      font-size: 180px; line-height: 1; margin-bottom: 20px;
+    }
+    .logo-wordmark {
+      font-size: 64px; font-weight: 900; color: #fff; letter-spacing: -2px;
+    }
+    .logo-tagline {
+      font-size: 20px; font-weight: 300; color: rgba(255,255,255,0.4); margin-top: 16px; letter-spacing: 4px; text-transform: uppercase;
+    }
+    
+    /* === SCENE 4: Features Grid === */
+    .scene-features {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .features-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1000px;
+    }
+    .feat-card {
+      padding: 36px 40px; border-radius: 20px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+    }
+    .feat-emoji { font-size: 40px; margin-bottom: 16px; }
+    .feat-name { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .feat-detail { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.6; }
+    .feat-accent-1 { border-left: 3px solid #6366f1; }
+    .feat-accent-2 { border-left: 3px solid #ec4899; }
+    .feat-accent-3 { border-left: 3px solid #06b6d4; }
+    .feat-accent-4 { border-left: 3px solid #f59e0b; }
+    
+    /* === SCENE 5: Your Channels, One Assistant === */
+    .scene-one {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; align-items: center; gap: 60px; padding: 0 120px;
+    }
+    .one-left { flex: 1; }
+    .one-right { display: flex; flex-direction: column; gap: 12px; }
+    .one-big { font-size: 56px; font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.15; }
+    .one-big-accent {
+      background: linear-gradient(135deg, #6366f1, #06b6d4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .one-desc { font-size: 18px; color: rgba(255,255,255,0.4); margin-top: 20px; line-height: 1.7; }
+    .one-channel {
+      padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 500;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+    }
+    .one-channel-active {
+      background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.25); color: #818cf8;
+    }
+    
+    /* === SCENE 6: Runs on Your Machine === */
+    .scene-self {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .self-terminal {
+      width: 700px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 32px 36px; font-family: 'JetBrains Mono', monospace;
+    }
+    .term-bar {
+      display: flex; gap: 8px; margin-bottom: 20px;
+    }
+    .term-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .term-dot-red { background: #ff5f57; }
+    .term-dot-yellow { background: #febc2e; }
+    .term-dot-green { background: #28c840; }
+    .term-line { font-size: 14px; line-height: 2; }
+    .term-prompt { color: #6366f1; }
+    .term-cmd { color: #e2e8f0; }
+    .term-output { color: rgba(255,255,255,0.3); }
+    .term-cursor {
+      display: inline-block; width: 8px; height: 16px; background: #6366f1;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    
+    .self-label {
+      font-size: 42px; font-weight: 900; color: #fff; margin-bottom: 40px; text-align: center;
+    }
+    .self-label-accent {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    
+    /* === SCENE 7: Plugin Ecosystem === */
+    .scene-plugins {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; align-items: center; justify-content: center; gap: 40px;
+    }
+    .plugin-center {
+      width: 200px; height: 200px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 80px; box-shadow: 0 0 80px rgba(99,102,241,0.3), 0 0 160px rgba(236,72,153,0.15);
+    }
+    .plugin-orbit {
+      position: absolute; border: 1px dashed rgba(255,255,255,0.1); border-radius: 50%;
+    }
+    .plugin-node {
+      position: absolute; width: 80px; height: 80px; border-radius: 16px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center; font-size: 36px;
+    }
+    .plugins-title {
+      position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+      font-size: 48px; font-weight: 900; color: #fff; text-align: center;
+    }
+    .plugins-title-accent {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    
+    /* === SCENE 8: CTA === */
+    .scene-cta {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .cta-logo { font-size: 120px; margin-bottom: 20px; }
+    .cta-text { font-size: 56px; font-weight: 900; color: #fff; margin-bottom: 24px; text-align: center; }
+    .cta-text-accent {
+      background: linear-gradient(135deg, #6366f1, #ec4899, #f59e0b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .cta-url {
+      font-family: 'JetBrains Mono', monospace; font-size: 24px; color: rgba(99,102,241,0.8);
+      margin-top: 16px;
+    }
+    .cta-motto {
+      font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.3); margin-top: 40px;
+      letter-spacing: 6px; text-transform: uppercase;
+    }
+    
+    /* Glowing ring */
+    .glow-ring {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 500px; height: 500px; border-radius: 50%;
+      border: 1px solid rgba(99,102,241,0.15);
+      box-shadow: 0 0 60px rgba(99,102,241,0.05), inset 0 0 60px rgba(99,102,241,0.03);
+    }
+    .glow-ring-2 {
+      width: 700px; height: 700px;
+      border-color: rgba(236,72,153,0.08);
+      box-shadow: 0 0 80px rgba(236,72,153,0.03), inset 0 0 80px rgba(236,72,153,0.02);
+    }
+  </style>
+</head>
+<body>
+  <!-- Backgrounds -->
+  <div class="space-bg"></div>
+  <div class="nebula-1" id="n1"></div>
+  <div class="nebula-2" id="n2"></div>
+  <div class="nebula-3" id="n3"></div>
+  <div class="tech-grid" id="tgrid"></div>
+  <div class="scan-line" id="scanLine" style="top:0"></div>
+  
+  <!-- Stars -->
+  <div class="star" id="s1" style="width:2px;height:2px;top:8%;left:12%;opacity:0.6"></div>
+  <div class="star" id="s2" style="width:3px;height:3px;top:15%;left:78%;opacity:0.4"></div>
+  <div class="star" id="s3" style="width:2px;height:2px;top:72%;left:45%;opacity:0.5"></div>
+  <div class="star" id="s4" style="width:1px;height:1px;top:35%;left:92%;opacity:0.7"></div>
+  <div class="star" id="s5" style="width:2px;height:2px;top:88%;left:18%;opacity:0.3"></div>
+  <div class="star" id="s6" style="width:1px;height:1px;top:52%;left:62%;opacity:0.5"></div>
+  <div class="star" id="s7" style="width:3px;height:3px;top:25%;left:35%;opacity:0.4"></div>
+  <div class="star" id="s8" style="width:2px;height:2px;top:65%;left:82%;opacity:0.6"></div>
+  
+  <!-- SCENE 1: The Problem -->
+  <div class="scene-problem" id="scene1">
+    <div class="problem-box">
+      <div class="problem-q">You use <span class="problem-q-accent">25 apps</span> a day.<br>Where's your assistant?</div>
+      <div class="problem-sub">WhatsApp. Telegram. Slack. Discord. Email. Calendar.</div>
+    </div>
+  </div>
+  
+  <!-- SCENE 2: Channel Chaos -->
+  <div class="scene-channels" id="scene2">
+    <div class="channels-label">your channels</div>
+    <div class="channels-row" id="chRow">
+      <div class="ch-pill" id="ch1">WhatsApp</div>
+      <div class="ch-pill ch-pill-highlight" id="ch2">Telegram</div>
+      <div class="ch-pill" id="ch3">Slack</div>
+      <div class="ch-pill" id="ch4">Discord</div>
+      <div class="ch-pill ch-pill-highlight" id="ch5">Signal</div>
+      <div class="ch-pill" id="ch6">iMessage</div>
+      <div class="ch-pill" id="ch7">Google Chat</div>
+      <div class="ch-pill" id="ch8">Teams</div>
+      <div class="ch-pill ch-pill-highlight" id="ch9">Email</div>
+      <div class="ch-pill" id="ch10">LINE</div>
+      <div class="ch-pill" id="ch11">Matrix</div>
+      <div class="ch-pill" id="ch12">IRC</div>
+    </div>
+    <div class="channels-question">One AI. <span class="channels-question-accent">Every channel.</span></div>
+  </div>
+  
+  <!-- SCENE 3: Logo Reveal -->
+  <div class="scene-logo" id="scene3">
+    <div class="logo-lobster" id="lobsterEmoji">🦞</div>
+    <div class="logo-wordmark" id="logoWord">OpenClaw</div>
+    <div class="logo-tagline" id="logoTag">Your Personal AI Assistant</div>
+  </div>
+  
+  <!-- SCENE 4: Features -->
+  <div class="scene-features" id="scene4">
+    <div class="features-grid">
+      <div class="feat-card feat-accent-1" id="fc1">
+        <div class="feat-emoji">💬</div>
+        <div class="feat-name">25+ Channels</div>
+        <div class="feat-detail">WhatsApp, Telegram, Slack, Discord, Signal, iMessage, Teams, and 18 more. One assistant, everywhere.</div>
+      </div>
+      <div class="feat-card feat-accent-2" id="fc2">
+        <div class="feat-emoji">🗣️</div>
+        <div class="feat-name">Voice & Canvas</div>
+        <div class="feat-detail">Speak and listen on macOS, iOS, Android. Live Canvas you control in real-time.</div>
+      </div>
+      <div class="feat-card feat-accent-3" id="fc3">
+        <div class="feat-emoji">🔒</div>
+        <div class="feat-name">Self-Hosted</div>
+        <div class="feat-detail">Runs on YOUR machine. Your data stays yours. No cloud dependency. Full privacy.</div>
+      </div>
+      <div class="feat-card feat-accent-4" id="fc4">
+        <div class="feat-emoji">🔌</div>
+        <div class="feat-name">Plugin System</div>
+        <div class="feat-detail">Extend with custom tools, providers, and channels. Build your own or grab from ClawHub.</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- SCENE 5: One Assistant, All Channels -->
+  <div class="scene-one" id="scene5">
+    <div class="one-left">
+      <div class="one-big">One assistant.<br><span class="one-big-accent">Every channel.</span></div>
+      <div class="one-desc">OpenClaw connects to all your messaging apps. Ask on WhatsApp, get answers on Telegram. Same memory, same context, same AI.</div>
+    </div>
+    <div class="one-right" id="oneChList">
+      <div class="one-channel one-channel-active">✓ Telegram</div>
+      <div class="one-channel one-channel-active">✓ WhatsApp</div>
+      <div class="one-channel one-channel-active">✓ Signal</div>
+      <div class="one-channel one-channel-active">✓ Slack</div>
+      <div class="one-channel one-channel-active">✓ Discord</div>
+      <div class="one-channel">+ 20 more</div>
+    </div>
+  </div>
+  
+  <!-- SCENE 6: Runs on Your Machine -->
+  <div class="scene-self" id="scene6">
+    <div class="self-label">Runs on <span class="self-label-accent">your machine</span></div>
+    <div class="self-terminal" id="terminal">
+      <div class="term-bar">
+        <div class="term-dot term-dot-red"></div>
+        <div class="term-dot term-dot-yellow"></div>
+        <div class="term-dot term-dot-green"></div>
+      </div>
+      <div class="term-line" id="tl1"><span class="term-prompt">$</span> <span class="term-cmd">npm install -g openclaw@latest</span></div>
+      <div class="term-line" id="tl2"><span class="term-output">✓ Installed openclaw@2026.4.15</span></div>
+      <div class="term-line" id="tl3"><span class="term-prompt">$</span> <span class="term-cmd">openclaw onboard --install-daemon</span></div>
+      <div class="term-line" id="tl4"><span class="term-output">✓ Gateway running on port 18789</span></div>
+      <div class="term-line" id="tl5"><span class="term-output">✓ Telegram connected</span></div>
+      <div class="term-line" id="tl6"><span class="term-output">✓ Memory enabled</span></div>
+      <div class="term-line" id="tl7"><span class="term-prompt">$</span> <span class="term-cursor" id="tcursor"></span></div>
+    </div>
+  </div>
+  
+  <!-- SCENE 7: Plugin Ecosystem -->
+  <div class="scene-plugins" id="scene7">
+    <div class="plugins-title">Infinite <span class="plugins-title-accent">extensibility</span></div>
+    <div class="glow-ring" id="ring1"></div>
+    <div class="glow-ring glow-ring-2" id="ring2"></div>
+    <div class="plugin-center" id="pCenter">🦞</div>
+    <div class="plugin-orbit" id="orbit1" style="width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="plugin-node" id="pn1" style="top:35%;left:20%">🧠</div>
+    <div class="plugin-node" id="pn2" style="top:25%;left:50%;transform:translateX(-50%)">🎤</div>
+    <div class="plugin-node" id="pn3" style="top:35%;right:20%">📧</div>
+    <div class="plugin-node" id="pn4" style="bottom:25%;left:25%">🔍</div>
+    <div class="plugin-node" id="pn5" style="bottom:25%;right:25%">📹</div>
+  </div>
+  
+  <!-- SCENE 8: CTA -->
+  <div class="scene-cta" id="scene8">
+    <div class="glow-ring" id="ctaRing"></div>
+    <div class="cta-logo" id="ctaLogo">🦞</div>
+    <div class="cta-text">Open<span class="cta-text-accent">Claw</span></div>
+    <div class="cta-url" id="ctaUrl">openclaw.ai</div>
+    <div class="cta-motto" id="ctaMotto">EXFOLIATE! EXFOLIATE!</div>
+  </div>
+  
+  <div id="root"
+    data-composition-id="main"
+    data-start="0"
+    data-duration="30"
+    data-width="1920"
+    data-height="1080"
+  ></div>
+  
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    
+    // Scan line movement
+    tl.to("#scanLine", { top: "100%", duration: 6, ease: "none" }, 0);
+    tl.to("#scanLine", { top: "0%", duration: 6, ease: "none" }, 6);
+    tl.to("#scanLine", { top: "60%", duration: 6, ease: "none" }, 12);
+    tl.to("#scanLine", { top: "100%", duration: 6, ease: "none" }, 18);
+    tl.to("#scanLine", { opacity: 0, duration: 2 }, 26);
+    
+    // Star twinkle
+    ["s1","s2","s3","s4","s5","s6","s7","s8"].forEach((s, i) => {
+      tl.to("#" + s, { opacity: 0.2, duration: 1 + (i % 3) * 0.5, ease: "sine.inOut" }, i * 0.3);
+      tl.to("#" + s, { opacity: 0.7, duration: 1.2 + (i % 2) * 0.3, ease: "sine.inOut" }, 1 + i * 0.3);
+    });
+    
+    // === SCENE 1: The Problem (0-4s) ===
+    tl.from("#scene1", { opacity: 0, duration: 0.5 }, 0);
+    tl.from(".problem-q", { y: 60, opacity: 0, duration: 1, ease: "power3.out" }, 0.5);
+    tl.from(".problem-sub", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" }, 1.5);
+    tl.to("#scene1", { opacity: 0, scale: 1.1, duration: 0.8, ease: "power2.in" }, 3.2);
+    
+    // === SCENE 2: Channel Chaos (4-9s) ===
+    tl.from("#scene2", { opacity: 0, duration: 0.5 }, 4);
+    tl.from(".channels-label", { y: -30, opacity: 0, duration: 0.5 }, 4.2);
+    tl.from("#ch1", { y: 20, opacity: 0, duration: 0.3 }, 4.5);
+    tl.from("#ch2", { y: 20, opacity: 0, duration: 0.3 }, 4.6);
+    tl.from("#ch3", { y: 20, opacity: 0, duration: 0.3 }, 4.7);
+    tl.from("#ch4", { y: 20, opacity: 0, duration: 0.3 }, 4.8);
+    tl.from("#ch5", { y: 20, opacity: 0, duration: 0.3 }, 4.9);
+    tl.from("#ch6", { y: 20, opacity: 0, duration: 0.3 }, 5.0);
+    tl.from("#ch7", { y: 20, opacity: 0, duration: 0.3 }, 5.1);
+    tl.from("#ch8", { y: 20, opacity: 0, duration: 0.3 }, 5.2);
+    tl.from("#ch9", { y: 20, opacity: 0, duration: 0.3 }, 5.3);
+    tl.from("#ch10", { y: 20, opacity: 0, duration: 0.3 }, 5.4);
+    tl.from("#ch11", { y: 20, opacity: 0, duration: 0.3 }, 5.5);
+    tl.from("#ch12", { y: 20, opacity: 0, duration: 0.3 }, 5.6);
+    tl.from(".channels-question", { y: 40, opacity: 0, duration: 0.8, ease: "power3.out" }, 6.5);
+    tl.to("#scene2", { opacity: 0, duration: 0.6, ease: "power2.in" }, 8.4);
+    
+    // === SCENE 3: Logo Reveal (9-13s) ===
+    tl.from("#scene3", { opacity: 0, duration: 0.3 }, 9);
+    tl.from("#lobsterEmoji", { scale: 0, rotation: -180, duration: 1.2, ease: "back.out(1.7)" }, 9.2);
+    tl.from("#logoWord", { y: 40, opacity: 0, duration: 0.8, ease: "power3.out" }, 10.0);
+    tl.from("#logoTag", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 10.6);
+    
+    // Pulse lobster
+    tl.to("#lobsterEmoji", { scale: 1.15, duration: 0.3, ease: "power2.out" }, 11.5);
+    tl.to("#lobsterEmoji", { scale: 1, duration: 0.3, ease: "power2.in" }, 11.8);
+    
+    tl.to("#scene3", { opacity: 0, scale: 0.9, duration: 0.8, ease: "power2.in" }, 12.2);
+    
+    // === SCENE 4: Features (13-18s) ===
+    tl.from("#scene4", { opacity: 0, duration: 0.5 }, 13);
+    tl.from("#fc1", { x: -80, opacity: 0, duration: 0.6, ease: "power3.out" }, 13.2);
+    tl.from("#fc2", { x: 80, opacity: 0, duration: 0.6, ease: "power3.out" }, 13.4);
+    tl.from("#fc3", { x: -80, opacity: 0, duration: 0.6, ease: "power3.out" }, 13.6);
+    tl.from("#fc4", { x: 80, opacity: 0, duration: 0.6, ease: "power3.out" }, 13.8);
+    
+    // Card hover
+    tl.to("#fc1", { scale: 1.03, duration: 0.2 }, 15.0);
+    tl.to("#fc1", { scale: 1, duration: 0.2 }, 15.2);
+    tl.to("#fc2", { scale: 1.03, duration: 0.2 }, 15.5);
+    tl.to("#fc2", { scale: 1, duration: 0.2 }, 15.7);
+    tl.to("#fc3", { scale: 1.03, duration: 0.2 }, 16.0);
+    tl.to("#fc3", { scale: 1, duration: 0.2 }, 16.2);
+    tl.to("#fc4", { scale: 1.03, duration: 0.2 }, 16.5);
+    tl.to("#fc4", { scale: 1, duration: 0.2 }, 16.7);
+    
+    tl.to("#scene4", { opacity: 0, duration: 0.6, ease: "power2.in" }, 17.4);
+    
+    // === SCENE 5: One Assistant (18-22s) ===
+    tl.from("#scene5", { opacity: 0, duration: 0.5 }, 18);
+    tl.from(".one-big", { x: -60, opacity: 0, duration: 0.8, ease: "power3.out" }, 18.2);
+    tl.from(".one-desc", { x: -40, opacity: 0, duration: 0.6, ease: "power3.out" }, 18.8);
+    tl.from("#oneChList > *", { x: 60, opacity: 0, stagger: 0.1, duration: 0.4, ease: "power3.out" }, 19.2);
+    
+    tl.to("#scene5", { opacity: 0, duration: 0.6, ease: "power2.in" }, 21.4);
+    
+    // === SCENE 6: Terminal (22-26s) ===
+    tl.from("#scene6", { opacity: 0, duration: 0.5 }, 22);
+    tl.from(".self-label", { y: -30, opacity: 0, duration: 0.6, ease: "power3.out" }, 22.2);
+    tl.from("#terminal", { y: 30, opacity: 0, scale: 0.95, duration: 0.6, ease: "power3.out" }, 22.5);
+    
+    // Terminal typing effect
+    tl.from("#tl1", { opacity: 0, duration: 0.1 }, 23.0);
+    tl.from("#tl2", { opacity: 0, duration: 0.1 }, 23.5);
+    tl.from("#tl3", { opacity: 0, duration: 0.1 }, 24.0);
+    tl.from("#tl4", { opacity: 0, duration: 0.1 }, 24.5);
+    tl.from("#tl5", { opacity: 0, duration: 0.1 }, 25.0);
+    tl.from("#tl6", { opacity: 0, duration: 0.1 }, 25.3);
+    tl.from("#tl7", { opacity: 0, duration: 0.1 }, 25.5);
+    
+    tl.to("#scene6", { opacity: 0, duration: 0.6, ease: "power2.in" }, 25.8);
+    
+    // === SCENE 7: Plugin Ecosystem (26-28.5s) ===
+    tl.from("#scene7", { opacity: 0, duration: 0.5 }, 26);
+    tl.from(".plugins-title", { y: -30, opacity: 0, duration: 0.6, ease: "power3.out" }, 26.2);
+    tl.from("#pCenter", { scale: 0, duration: 0.8, ease: "back.out(2)" }, 26.4);
+    tl.from("#ring1", { scale: 0, opacity: 0, duration: 0.6, ease: "power3.out" }, 26.8);
+    tl.from("#ring2", { scale: 0, opacity: 0, duration: 0.6, ease: "power3.out" }, 27.0);
+    tl.from("#orbit1", { scale: 0, opacity: 0, duration: 0.6, ease: "power3.out" }, 26.8);
+    
+    // Plugin nodes pop in
+    tl.from("#pn1", { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(2)" }, 27.2);
+    tl.from("#pn2", { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(2)" }, 27.4);
+    tl.from("#pn3", { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(2)" }, 27.6);
+    tl.from("#pn4", { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(2)" }, 27.8);
+    tl.from("#pn5", { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(2)" }, 28.0);
+    
+    // Rotate orbit elements slightly
+    tl.to("#pn1", { rotation: 10, duration: 1, ease: "sine.inOut" }, 27.2);
+    tl.to("#pn3", { rotation: -10, duration: 1, ease: "sine.inOut" }, 27.6);
+    
+    tl.to("#scene7", { opacity: 0, duration: 0.6, ease: "power2.in" }, 28.5);
+    
+    // === SCENE 8: CTA (28.5-30s) ===
+    tl.from("#scene8", { opacity: 0, duration: 0.5 }, 28.5);
+    tl.from("#ctaLogo", { scale: 0, rotation: -90, duration: 0.8, ease: "back.out(1.7)" }, 28.7);
+    tl.from("#ctaRing", { scale: 0, opacity: 0, duration: 0.6, ease: "power3.out" }, 29.0);
+    tl.from(".cta-text", { y: 30, opacity: 0, duration: 0.6, ease: "power3.out" }, 29.2);
+    tl.from("#ctaUrl", { y: 20, opacity: 0, duration: 0.5, ease: "power3.out" }, 29.5);
+    tl.from("#ctaMotto", { y: 20, opacity: 0, duration: 0.5, ease: "power3.out" }, 29.7);
+    
+    // CTA pulse
+    tl.to("#ctaLogo", { scale: 1.1, duration: 0.2 }, 29.8);
+    tl.to("#ctaLogo", { scale: 1, duration: 0.2 }, 30.0);
+    
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>

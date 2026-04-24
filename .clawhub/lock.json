@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "skills": {
+    "gog": {
+      "version": "1.0.0",
+      "installedAt": 1776433144274
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1776543639915
+    },
+    "canva": {
+      "version": "1.0.0",
+      "installedAt": 1776685209011
+    },
+    "outreach": {
+      "version": "1.0.0",
+      "installedAt": 1776935258979
+    }
+  }
+}
